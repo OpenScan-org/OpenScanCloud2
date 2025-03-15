@@ -5,6 +5,6 @@ const PORT = process.env.PORT || 8080;
 const URL = process.env.URL || "unkown url";
 
 app.listen(PORT, () => {
-    console.log(`Server running on ${URL}`);
+    console.log(`Server running on ${URL}/docs`);
 });
 

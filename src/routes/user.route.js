@@ -24,7 +24,7 @@ router.get('/', AuthMiddleware.verifyToken, UserController.getAllUsers);
 
 /**
  * @swagger
- * /users/register:
+ * /api/v1/users/register:
  *   post:
  *     summary: Neuen Benutzer registrieren
  *     description: Erstellt einen neuen Benutzer mit Benutzername, E-Mail und Passwort.
@@ -59,7 +59,7 @@ router.post('/register', validateUserRegistration, UserController.register);
 
 /**
  * @swagger
- * /users/login:
+ * /api/v1/users/login:
  *   post:
  *     summary: Benutzer-Login
  *     description: Loggt den Benutzer ein und gibt ein JWT-Token zurück.
