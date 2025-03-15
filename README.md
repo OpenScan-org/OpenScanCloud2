@@ -19,6 +19,7 @@ npm install
    - Erstelle eine `.env` Datei im Root-Verzeichnis
    - Füge folgende Konfiguration hinzu:
 ```properties
+BASE_PATH=
 HOST=localhost
 PORT=8080
 URL=http://localhost:8080
