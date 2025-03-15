@@ -18,3 +18,5 @@ pids
 *.pid
 *.seed
 *.pid.lock
+
+.continue/
