@@ -13,9 +13,7 @@ sequelize.sync({ force: false })
     .catch(err => console.error('Database sync error:', err));
 
 const app = express();
-
-// Define base path for the application
-const BASE_PATH = '/openscancloud';
+const basePath = process.env.BASE_PATH || "";
 
 app.use(cors({
     origin: '*',
@@ -27,18 +25,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // API-Routen einbinden with correct base path
-app.use(`${BASE_PATH}/api/v1`, routes);
+app.use(`${basePath}/api/v1`, routes);
 
 // Swagger-UI für API-Dokumentation with correct base path
-app.use(`${BASE_PATH}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use(`${basePath}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Add a simple health check route
-app.get(`${BASE_PATH}/health`, (req, res) => {
+app.get(`${basePath}/health`, (req, res) => {
     res.status(200).json({ status: 'OK' });
 });
 
 // Debug route to see all registered routes
-app.get(`${BASE_PATH}/routes`, (req, res) => {
+app.get(`${basePath}/routes`, (req, res) => {
     const routes = [];
     app._router.stack.forEach((middleware) => {
         if (middleware.route) {
