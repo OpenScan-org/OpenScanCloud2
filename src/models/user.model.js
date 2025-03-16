@@ -41,20 +41,21 @@ const User = sequelize.define('User', {
         allowNull: false,
         defaultValue: true
     },
+    quality: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 5
+    },
     credit: {
         type: DataTypes.BIGINT,
         allowNull: false,
         defaultValue: 0
     },
+    // GGf. quality, limit filesize, photos, texture entfernen? Da man über Gruppen das regeln könnte.
     usergroup: {
         type: DataTypes.ENUM('default', 'premium', 'admin'),
         allowNull: false,
         defaultValue: 'default'
-    },
-    quality: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 5
     }
 }, {
     timestamps: true,
