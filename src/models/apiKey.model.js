@@ -15,7 +15,6 @@ const ApiKey = sequelize.define('ApiKey', {
             model: User,
             key: 'id'
         },
-        onDelete: 'CASCADE'
     },
     key: {
         type: DataTypes.STRING,
