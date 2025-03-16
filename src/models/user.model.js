@@ -1,5 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
+import Job from './job.model.js';
+import ApiKey from './apiKey.model.js';
 
 const User = sequelize.define('User', {
     id: {
@@ -57,5 +59,12 @@ const User = sequelize.define('User', {
 }, {
     timestamps: true
 });
+
+// Ensure cascading delete on jobs and API keys when a user is deleted
+User.hasMany(Job, { foreignKey: 'userId', onDelete: 'CASCADE' });
+Job.belongsTo(User, { foreignKey: 'userId' });
+
+User.hasMany(ApiKey, { foreignKey: 'userId', onDelete: 'CASCADE' });
+ApiKey.belongsTo(User, { foreignKey: 'userId' });
 
 export default User;
