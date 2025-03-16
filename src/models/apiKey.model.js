@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
 import crypto from 'crypto';
+import bcrypt from 'bcrypt';
 
 const ApiKey = sequelize.define('ApiKey', {
     id: {
@@ -16,7 +17,7 @@ const ApiKey = sequelize.define('ApiKey', {
             key: 'id'
         },
     },
-    key: {
+    keyHash: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true
@@ -48,5 +49,16 @@ const ApiKey = sequelize.define('ApiKey', {
         }
     }
 });
+
+ApiKey.generateKey = async function () {
+    const rawKey = crypto.randomBytes(32).toString('hex');
+    const hashedKey = await bcrypt.hash(rawKey, 10);
+
+    return { rawKey, hashedKey };
+};
+
+ApiKey.verifyKey = async function (inputKey, storedHash) {
+    return await bcrypt.compare(inputKey, storedHash);
+};
 
 export default ApiKey;

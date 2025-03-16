@@ -57,7 +57,17 @@ const User = sequelize.define('User', {
         defaultValue: 5
     }
 }, {
-    timestamps: true
+    timestamps: true,
+    hooks: {
+        beforeCreate: async (user) => {
+            user.password = await bcrypt.hash(user.password, 10);
+        },
+        beforeUpdate: async (user) => {
+            if (user.changed('password')) {
+                user.password = await bcrypt.hash(user.password, 10);
+            }
+        }
+    }
 });
 
 // Ensure cascading delete on jobs and API keys when a user is deleted
