@@ -1,7 +1,6 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
-import Job from './job.model.js';
-import ApiKey from './apiKey.model.js';
+import bcrypt from 'bcryptjs';
 
 const User = sequelize.define('User', {
     id: {
@@ -51,7 +50,6 @@ const User = sequelize.define('User', {
         allowNull: false,
         defaultValue: 0
     },
-    // GGf. quality, limit filesize, photos, texture entfernen? Da man über Gruppen das regeln könnte.
     usergroup: {
         type: DataTypes.ENUM('default', 'premium', 'admin'),
         allowNull: false,
@@ -71,11 +69,18 @@ const User = sequelize.define('User', {
     }
 });
 
-// Ensure cascading delete on jobs and API keys when a user is deleted
-User.hasMany(Job, { foreignKey: 'userId', onDelete: 'CASCADE' });
-Job.belongsTo(User, { foreignKey: 'userId' });
-
-User.hasMany(ApiKey, { foreignKey: 'userId', onDelete: 'CASCADE' });
-ApiKey.belongsTo(User, { foreignKey: 'userId' });
+// Setup associations method
+User.setupAssociations = (models) => {
+    // Add cascading associations
+    User.hasMany(models.Job, { 
+        foreignKey: 'userId', 
+        onDelete: 'CASCADE' 
+    });
+    
+    User.hasMany(models.ApiKey, { 
+        foreignKey: 'userId', 
+        onDelete: 'CASCADE' 
+    });
+};
 
 export default User;

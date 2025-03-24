@@ -1,8 +1,9 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
 import crypto from 'crypto';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
+// Declare the model first
 const ApiKey = sequelize.define('ApiKey', {
     id: {
         type: DataTypes.INTEGER,
@@ -13,7 +14,7 @@ const ApiKey = sequelize.define('ApiKey', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: User,
+            model: 'User', // Use the table name instead of the model
             key: 'id'
         },
     },
@@ -49,6 +50,14 @@ const ApiKey = sequelize.define('ApiKey', {
         }
     }
 });
+
+// Add the association method to be used after models are loaded
+ApiKey.setupAssociations = (models) => {
+    ApiKey.belongsTo(models.User, { 
+        foreignKey: 'userId',
+        onDelete: 'CASCADE'
+    });
+};
 
 ApiKey.generateKey = async function () {
     const rawKey = crypto.randomBytes(32).toString('hex');
