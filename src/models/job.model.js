@@ -60,7 +60,7 @@ const Job = sequelize.define('Job', {
         defaultValue: 0
     },
     status: {
-        type: DataTypes.ENUM('uploaded', 'processing', 'finished', 'error'),
+        type: DataTypes.ENUM('uploaded', 'approved', 'processing', 'initialized', 'finished', 'error'),
         allowNull: false,
         defaultValue: 'uploaded'
     },
@@ -74,12 +74,17 @@ const Job = sequelize.define('Job', {
         allowNull: true
     },
     objecttype: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM('object', 'scene'),
         allowNull: true
     },
     processtype: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM('photogrammetry'),
         allowNull: true
+    },
+    progress: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
     }
 }, {
     timestamps: true
