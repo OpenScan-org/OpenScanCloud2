@@ -73,6 +73,11 @@ const Job = sequelize.define('Job', {
         type: DataTypes.STRING,
         allowNull: true
     },
+    email_notification: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true
+    },
     objecttype: {
         type: DataTypes.ENUM('object', 'scene'),
         allowNull: true
