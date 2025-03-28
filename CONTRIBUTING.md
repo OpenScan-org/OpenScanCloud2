@@ -5,6 +5,9 @@ Dieses Projekt basiert auf Node.js mit Express und nutzt Sequelize als ORM zur D
 
 > **Wichtig:** Alle Code-Kommentare und Swagger-Dokumentationen müssen immer in **Englisch** verfasst sein.
 
+## Kurzbeschreibung des Ablaufs
+Ein Benutzer lädt über die API einen neuen Job hoch. Die API teilt diesen Job automatisch in passende Teilaufgaben ein. Registrierte Worker (z. B. Maschinen für die Fotogrammetrie) fragen regelmäßig bei der API nach verfügbaren Jobs und übernehmen diese zur Bearbeitung. Nach Abschluss laden sie die Ergebnisse hoch und aktualisieren den Jobstatus. Jobs können so gestaltet sein, dass sie von mehreren Workern nacheinander bearbeitet werden. Zusätzlich existiert eine administrative Route, über die Admin-Benutzer Benutzergruppen und weitere systemrelevante Einstellungen verwalten können.
+
 ## Ordnerstruktur und Zuständigkeiten
 
 - **src/server.js**  
