@@ -2,6 +2,7 @@
 
 ## Überblick
 Dieses Projekt basiert auf Node.js mit Express und nutzt Sequelize als ORM zur Datenbankverwaltung. Die API-Dokumentation erfolgt über Swagger, und die Sicherheits- sowie Validierungslogik wird über dedizierte Middlewares abgewickelt.
+Alle API-Routen sind unter dem Präfix **`/api/v1`** erreichbar.
 
 > **Wichtig:** Alle Code-Kommentare und Swagger-Dokumentationen müssen immer in **Englisch** verfasst sein.
 
