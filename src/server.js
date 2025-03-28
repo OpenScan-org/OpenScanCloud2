@@ -1,10 +1,32 @@
 import express from 'express';
 import cors from 'cors';
-// import helmet from 'helmet';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger.js';
 import routes from './routes/index.js';
 import sequelize from './config/database.js';
+
+// Import models to ensure they're loaded
+import User from './models/user.model.js';
+import Job from './models/job.model.js';
+import Worker from './models/worker.model.js';
+import ApiKey from './models/apiKey.model.js';
+
+const app = express();
+const basePath = process.env.BASE_PATH || "";
+
+// Setup model associations
+const models = {
+    User,
+    Job,
+    Worker,
+    ApiKey
+};
+
+Object.values(models).forEach(model => {
+    if (model.setupAssociations) {
+        model.setupAssociations(models);
+    }
+});
 
 sequelize.sync({ force: false })
     .then(() => {
@@ -12,33 +34,27 @@ sequelize.sync({ force: false })
     })
     .catch(err => console.error('Database sync error:', err));
 
-const app = express();
-
-// Define base path for the application
-const BASE_PATH = '/openscancloud';
-
 app.use(cors({
     origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
-// app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // API-Routen einbinden with correct base path
-app.use(`${BASE_PATH}/api/v1`, routes);
+app.use(`${basePath}/api/v1`, routes);
 
 // Swagger-UI für API-Dokumentation with correct base path
-app.use(`${BASE_PATH}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use(`${basePath}/docs`, swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Add a simple health check route
-app.get(`${BASE_PATH}/health`, (req, res) => {
+app.get(`${basePath}/health`, (req, res) => {
     res.status(200).json({ status: 'OK' });
 });
 
 // Debug route to see all registered routes
-app.get(`${BASE_PATH}/routes`, (req, res) => {
+app.get(`${basePath}/routes`, (req, res) => {
     const routes = [];
     app._router.stack.forEach((middleware) => {
         if (middleware.route) {

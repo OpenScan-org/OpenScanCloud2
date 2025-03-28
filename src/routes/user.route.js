@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import UserController from '../controllers/user.controller.js';
 import AuthMiddleware from '../middlewares/auth.middleware.js';
+import { validateUserRegistration, validateUserLogin } from '../middlewares/validation.middleware.js';
 
 const router = Router();
 
@@ -19,11 +20,11 @@ const router = Router();
  *       401:
  *         description: Nicht autorisiert, Token fehlt oder ist ungültig.
  */
-router.get('/', UserController.getAllUsers);
+router.get('/', AuthMiddleware.verifyToken, UserController.getAllUsers);
 
 /**
  * @swagger
- * /users/register:
+ * /api/v1/users/register:
  *   post:
  *     summary: Neuen Benutzer registrieren
  *     description: Erstellt einen neuen Benutzer mit Benutzername, E-Mail und Passwort.
@@ -54,11 +55,11 @@ router.get('/', UserController.getAllUsers);
  *       400:
  *         description: Ungültige Eingaben.
  */
-router.post('/register', UserController.register);
+router.post('/register', validateUserRegistration, UserController.register);
 
 /**
  * @swagger
- * /users/login:
+ * /api/v1/users/login:
  *   post:
  *     summary: Benutzer-Login
  *     description: Loggt den Benutzer ein und gibt ein JWT-Token zurück.
@@ -85,7 +86,7 @@ router.post('/register', UserController.register);
  *       401:
  *         description: Ungültige Anmeldeinformationen.
  */
-router.post('/login', UserController.login);
+router.post('/login', validateUserLogin, UserController.login);
 
 export default router;
 
